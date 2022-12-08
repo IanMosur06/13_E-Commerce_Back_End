@@ -35,6 +35,10 @@ router.get('/:id', async (req, res) => {
 // create a new category
 router.post('/', async (req, res) => {
   try {
+    const categoryData = await Category.create(req.body);
+    res.status(200).json(categoryData);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
@@ -43,9 +47,9 @@ router.put('/:id', async (req, res) => {
   try{
     const categoryData = await Category.update(
       req.body,
-      { where: { id = req.params.id }}
+      { where: { id: req.params.id }}
     );
-    id (!categoryData) {
+    if (!categoryData) {
       res.status(404).json({ message: "There is no category that is associated with this id!" });
       return;
     }
